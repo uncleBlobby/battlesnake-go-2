@@ -6,6 +6,7 @@ package main
 // from the list of possible moves!
 
 import (
+	"fmt"
 	"log"
 )
 
@@ -136,30 +137,17 @@ func move(state GameState) BattlesnakeMoveResponse {
 	// Finally, choose a move from the available safe moves.
 	// TODO: Step 5 - Select a move to make based on strategy, rather than random.
 	var nextMove string
-	/*
-		safeMoves := []string{}
-		for move, isSafe := range possibleMoves {
-			if isSafe {
-				safeMoves = append(safeMoves, move)
-			}
-		}
-	*/
-	/*
-		if len(safeMoves) == 0 {
-			nextMove = "down"
-			log.Printf("%s MOVE %d: No safe moves detected! Moving %s\n", state.Game.ID, state.Turn, nextMove)
-		} else {
-			nextMove = safeMoves[rand.Intn(len(safeMoves))]
-			log.Printf("%s MOVE %d: %s\n", state.Game.ID, state.Turn, nextMove)
-		}
-	*/
+
 	// Default move will be right
 
 	nextMove = "right"
 	temporaryMaximum := scoredMoves["right"]
+	fmt.Println(state.Game.Ruleset.Name)
+	fmt.Println(scoredMoves)
 
 	for move, score := range scoredMoves {
 		if score > temporaryMaximum {
+			temporaryMaximum = score
 			nextMove = move
 		}
 	}
