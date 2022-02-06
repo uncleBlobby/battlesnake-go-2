@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"testing"
 )
 
@@ -518,7 +517,130 @@ func TestCountEmptyCellsLeft(t *testing.T) {
 		if viewDistance["left"] > viewDistance["right"] {
 			t.Errorf("view distance, %v", viewDistance)
 		}
-		fmt.Println(viewDistance)
+		//fmt.Println(viewDistance)
+	}
+}
+
+func TestCountEmptyCellsRight(t *testing.T) {
+	// Arrange
+	me := Battlesnake{
+		// Length 3, facing down
+		Head: Coord{X: 5, Y: 5},
+		Body: []Coord{{X: 5, Y: 5}, {X: 5, Y: 6}, {X: 5, Y: 7}},
+	}
+
+	enemy1 := Battlesnake{
+		Head:   Coord{X: 8, Y: 4},
+		Body:   []Coord{{X: 8, Y: 4}, {X: 8, Y: 5}, {X: 8, Y: 6}},
+		Length: 3,
+	}
+
+	state := GameState{
+		Board: Board{
+			Width:  11,
+			Height: 11,
+			Snakes: []Battlesnake{me, enemy1},
+			Food:   []Coord{{X: 5, Y: 4}},
+		},
+		You: me,
+		Game: Game{
+			Ruleset: Ruleset{
+				Name: "standard",
+			},
+		},
+	}
+
+	// Act 1,000x (this isn't a great way to test, but it's okay for starting out)
+	for i := 0; i < 1000; i++ {
+		viewDistance := CountCellsUntilYouSeeASnake(state)
+		//nextMove := move(state)
+		// Assert never move right
+		if viewDistance["right"] > viewDistance["left"] {
+			t.Errorf("view distance, %v", viewDistance)
+		}
+		//fmt.Println(viewDistance)
+	}
+}
+
+func TestCountEmptyCellsUp(t *testing.T) {
+	// Arrange
+	me := Battlesnake{
+		// Length 3, facing up
+		Head: Coord{X: 5, Y: 5},
+		Body: []Coord{{X: 5, Y: 5}, {X: 5, Y: 4}, {X: 5, Y: 3}},
+	}
+
+	enemy1 := Battlesnake{
+		Head:   Coord{X: 4, Y: 8},
+		Body:   []Coord{{X: 4, Y: 8}, {X: 5, Y: 8}, {X: 6, Y: 8}},
+		Length: 3,
+	}
+
+	state := GameState{
+		Board: Board{
+			Width:  11,
+			Height: 11,
+			Snakes: []Battlesnake{me, enemy1},
+			Food:   []Coord{{X: 5, Y: 4}},
+		},
+		You: me,
+		Game: Game{
+			Ruleset: Ruleset{
+				Name: "standard",
+			},
+		},
+	}
+
+	// Act 1,000x (this isn't a great way to test, but it's okay for starting out)
+	for i := 0; i < 1000; i++ {
+		viewDistance := CountCellsUntilYouSeeASnake(state)
+		//nextMove := move(state)
+		// Assert never move right
+		if viewDistance["down"] < viewDistance["up"] {
+			t.Errorf("view distance, %v", viewDistance)
+		}
+		//fmt.Println(viewDistance)
+	}
+}
+
+func TestCountEmptyCellsDown(t *testing.T) {
+	// Arrange
+	me := Battlesnake{
+		// Length 3, facing down
+		Head: Coord{X: 5, Y: 5},
+		Body: []Coord{{X: 5, Y: 5}, {X: 5, Y: 6}, {X: 5, Y: 7}},
+	}
+
+	enemy1 := Battlesnake{
+		Head:   Coord{X: 4, Y: 2},
+		Body:   []Coord{{X: 4, Y: 2}, {X: 5, Y: 2}, {X: 6, Y: 2}},
+		Length: 3,
+	}
+
+	state := GameState{
+		Board: Board{
+			Width:  11,
+			Height: 11,
+			Snakes: []Battlesnake{me, enemy1},
+			Food:   []Coord{{X: 5, Y: 4}},
+		},
+		You: me,
+		Game: Game{
+			Ruleset: Ruleset{
+				Name: "standard",
+			},
+		},
+	}
+
+	// Act 1,000x (this isn't a great way to test, but it's okay for starting out)
+	for i := 0; i < 1000; i++ {
+		viewDistance := CountCellsUntilYouSeeASnake(state)
+		//nextMove := move(state)
+		// Assert never move right
+		if viewDistance["down"] > viewDistance["up"] {
+			t.Errorf("view distance, %v", viewDistance)
+		}
+		//fmt.Println(viewDistance)
 	}
 }
 
