@@ -6,6 +6,7 @@ package main
 // from the list of possible moves!
 
 import (
+	"fmt"
 	"log"
 )
 
@@ -55,6 +56,8 @@ func move(state GameState) BattlesnakeMoveResponse {
 	AvoidOwnBody(state, scoredMoves)
 	AvoidOtherSnakes(state, scoredMoves)
 	FindCloseFood(state, scoredMoves)
+
+	fmt.Println(CountCellsUntilYouSeeASnake(state))
 
 	return BattlesnakeMoveResponse{
 		Move: ChooseMove(scoredMoves),

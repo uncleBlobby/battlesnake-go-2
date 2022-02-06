@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"testing"
 )
 
@@ -477,6 +478,47 @@ func TestFindCloseFood(t *testing.T) {
 		if nextMove.Move != "down" {
 			t.Errorf("snake missed food, %s", nextMove.Move)
 		}
+	}
+}
+
+func TestCountEmptyCellsLeft(t *testing.T) {
+	// Arrange
+	me := Battlesnake{
+		// Length 3, facing down
+		Head: Coord{X: 5, Y: 5},
+		Body: []Coord{{X: 5, Y: 5}, {X: 5, Y: 6}, {X: 5, Y: 7}},
+	}
+
+	enemy1 := Battlesnake{
+		Head:   Coord{X: 2, Y: 4},
+		Body:   []Coord{{X: 2, Y: 4}, {X: 2, Y: 5}, {X: 2, Y: 6}},
+		Length: 3,
+	}
+
+	state := GameState{
+		Board: Board{
+			Width:  11,
+			Height: 11,
+			Snakes: []Battlesnake{me, enemy1},
+			Food:   []Coord{{X: 5, Y: 4}},
+		},
+		You: me,
+		Game: Game{
+			Ruleset: Ruleset{
+				Name: "standard",
+			},
+		},
+	}
+
+	// Act 1,000x (this isn't a great way to test, but it's okay for starting out)
+	for i := 0; i < 1000; i++ {
+		viewDistance := CountCellsUntilYouSeeASnake(state)
+		//nextMove := move(state)
+		// Assert never move right
+		if viewDistance["left"] > viewDistance["right"] {
+			t.Errorf("view distance, %v", viewDistance)
+		}
+		fmt.Println(viewDistance)
 	}
 }
 
