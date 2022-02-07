@@ -2,8 +2,15 @@ package main
 
 import "fmt"
 
-func ChooseMove(scoredMoves map[string]int) string {
+func ChooseMove(scoredMoves map[string]int, viewDistances map[string]int) string {
 	var nextMove string
+
+	scoredMoves["left"] += viewDistances["left"]
+	scoredMoves["right"] += viewDistances["right"]
+	scoredMoves["up"] += viewDistances["up"]
+	scoredMoves["down"] += viewDistances["down"]
+
+	fmt.Println(scoredMoves)
 
 	// Default move to the right.
 	nextMove = "right"

@@ -79,22 +79,44 @@ func AvoidOtherSnakes(state GameState, scoredMoves map[string]int) {
 	}
 }
 
-func FindCloseFood(state GameState, scoredMoves map[string]int) {
+func FindCloseFood(state GameState, healthFactor int, scoredMoves map[string]int) {
 	myHead := state.You.Body[0]
 	foods := state.Board.Food
 
 	for i := 0; i < len(foods); i++ {
 		if (myHead.X+1 == foods[i].X) && (myHead.Y == foods[i].Y) {
-			scoredMoves["right"] += 50
+			scoredMoves["right"] += healthFactor
 		}
 		if (myHead.X-1 == foods[i].X) && (myHead.Y == foods[i].Y) {
-			scoredMoves["left"] += 50
+			scoredMoves["left"] += healthFactor
 		}
 		if (myHead.X == foods[i].X) && (myHead.Y+1 == foods[i].Y) {
-			scoredMoves["up"] += 50
+			scoredMoves["up"] += healthFactor
 		}
 		if (myHead.X == foods[i].X) && (myHead.Y-1 == foods[i].Y) {
-			scoredMoves["down"] += 50
+			scoredMoves["down"] += healthFactor
+		}
+	}
+}
+
+func PreferNotSaucyMoves(state GameState, scoredMoves map[string]int) {
+	myHead := state.You.Body[0]
+	hazards := state.Board.Hazards
+
+	if len(hazards) > 0 {
+		for i := 0; i < len(hazards); i++ {
+			if (myHead.X-1 == hazards[i].X) && (myHead.Y == hazards[i].Y) {
+				scoredMoves["left"] += -50
+			}
+			if (myHead.X+1 == hazards[i].X) && (myHead.Y == hazards[i].Y) {
+				scoredMoves["right"] += -50
+			}
+			if (myHead.X == hazards[i].X) && (myHead.Y-1 == hazards[i].Y) {
+				scoredMoves["down"] += -50
+			}
+			if (myHead.X == hazards[i].X) && (myHead.Y+1 == hazards[i].Y) {
+				scoredMoves["up"] += -50
+			}
 		}
 	}
 }
