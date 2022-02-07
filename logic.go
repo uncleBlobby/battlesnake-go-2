@@ -56,6 +56,7 @@ func move(state GameState) BattlesnakeMoveResponse {
 	AvoidOtherSnakes(state, scoredMoves)
 	PreferNotSaucyMoves(state, scoredMoves)
 	FindCloseFood(state, FindMissingHealth(state), scoredMoves)
+	TurnAwayFromLargerSnakes(state, scoredMoves)
 	TurnTowardSmallerSnakes(state, scoredMoves)
 	viewDistances := CountCellsUntilYouSeeASnake(state)
 
