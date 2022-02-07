@@ -120,3 +120,36 @@ func PreferNotSaucyMoves(state GameState, scoredMoves map[string]int) {
 		}
 	}
 }
+
+func CheckIfCurrentlyInSauce(state GameState) bool {
+	myHead := state.You.Body[0]
+	hazards := state.Board.Hazards
+
+	for i := 0; i < len(hazards); i++ {
+		if (hazards[i].X == myHead.X) && (hazards[i].Y == myHead.Y) {
+			return true
+		}
+	}
+
+	return false
+}
+
+func MoveOutOfSauce(state GameState, scoredMoves map[string]int) {
+	myHead := state.You.Body[0]
+	hazards := state.Board.Hazards
+	for i := 0; i < len(hazards); i++ {
+		if FindNextCoord(state, "left", myHead) == hazards[i] {
+			scoredMoves["left"] -= 75
+		}
+		if FindNextCoord(state, "right", myHead) == hazards[i] {
+			scoredMoves["right"] -= 75
+		}
+		if FindNextCoord(state, "up", myHead) == hazards[i] {
+			scoredMoves["up"] -= 75
+		}
+		if FindNextCoord(state, "down", myHead) == hazards[i] {
+			scoredMoves["down"] -= 75
+		}
+	}
+
+}
