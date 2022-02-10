@@ -22,6 +22,7 @@ func info() BattlesnakeInfoResponse {
 		Color:      "#8a2be2",     // TODO: Personalize
 		Head:       "shades",      // TODO: Personalize
 		Tail:       "bolt",        // TODO: Personalize
+		Version:    "0.1.3-beta",
 	}
 }
 
