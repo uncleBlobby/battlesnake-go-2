@@ -122,7 +122,7 @@ func CountCellsUntilYouSeeASnake(state GameState) map[string]int {
 				}
 			}
 
-			for i := myHead.X; i < 25; i++ {
+			for i := myHead.X; i < 11; i++ {
 				currentCoord := Coord{X: i, Y: myHead.Y}
 				if !CheckCoordForAnySnake(state, FindNextCoord(state, "right", currentCoord)) {
 					freeCells["right"] += 1
@@ -152,7 +152,7 @@ func CountCellsUntilYouSeeASnake(state GameState) map[string]int {
 				}
 			}
 
-			for i := myHead.Y; i < 25; i++ {
+			for i := myHead.Y; i < 11; i++ {
 				currentCoord := Coord{X: myHead.X, Y: i}
 				if !CheckCoordForAnySnake(state, FindNextCoord(state, "up", currentCoord)) {
 					freeCells["up"] += 1
