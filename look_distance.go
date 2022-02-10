@@ -45,128 +45,128 @@ func CountCellsUntilYouSeeASnake(state GameState) map[string]int {
 		"right": 0,
 	}
 
-	if state.Game.Ruleset.Name != "wrapped" {
-		for i := myHead.X; i >= 1; i-- {
-			currentCoord := Coord{X: i, Y: myHead.Y}
-			if !CheckCoordForAnySnake(state, FindNextCoord(state, "left", currentCoord)) {
+	//if state.Game.Ruleset.Name != "wrapped" {
+	for i := myHead.X; i >= 1; i-- {
+		currentCoord := Coord{X: i, Y: myHead.Y}
+		if !CheckCoordForAnySnake(state, FindNextCoord(state, "left", currentCoord)) {
+			freeCells["left"] += 1
+			if !CheckCoordForAnySnake(state, FindNextCoord(state, "left", FindNextCoord(state, "up", currentCoord))) {
 				freeCells["left"] += 1
-				if !CheckCoordForAnySnake(state, FindNextCoord(state, "left", FindNextCoord(state, "up", currentCoord))) {
-					freeCells["left"] += 1
-				}
-				if !CheckCoordForAnySnake(state, FindNextCoord(state, "left", FindNextCoord(state, "down", currentCoord))) {
-					freeCells["left"] += 1
-				}
-			} else {
-				break
 			}
+			if !CheckCoordForAnySnake(state, FindNextCoord(state, "left", FindNextCoord(state, "down", currentCoord))) {
+				freeCells["left"] += 1
+			}
+		} else {
+			break
 		}
+	}
 
-		for i := myHead.X; i < state.Board.Width-1; i++ {
-			currentCoord := Coord{X: i, Y: myHead.Y}
-			if !CheckCoordForAnySnake(state, FindNextCoord(state, "right", currentCoord)) {
+	for i := myHead.X; i < state.Board.Width-1; i++ {
+		currentCoord := Coord{X: i, Y: myHead.Y}
+		if !CheckCoordForAnySnake(state, FindNextCoord(state, "right", currentCoord)) {
+			freeCells["right"] += 1
+			if !CheckCoordForAnySnake(state, FindNextCoord(state, "right", FindNextCoord(state, "up", currentCoord))) {
 				freeCells["right"] += 1
-				if !CheckCoordForAnySnake(state, FindNextCoord(state, "right", FindNextCoord(state, "up", currentCoord))) {
-					freeCells["right"] += 1
-				}
-				if !CheckCoordForAnySnake(state, FindNextCoord(state, "right", FindNextCoord(state, "down", currentCoord))) {
-					freeCells["right"] += 1
-				}
-			} else {
-				break
 			}
+			if !CheckCoordForAnySnake(state, FindNextCoord(state, "right", FindNextCoord(state, "down", currentCoord))) {
+				freeCells["right"] += 1
+			}
+		} else {
+			break
 		}
+	}
 
-		for i := myHead.Y; i >= 1; i-- {
-			currentCoord := Coord{X: myHead.X, Y: i}
-			if !CheckCoordForAnySnake(state, FindNextCoord(state, "down", currentCoord)) {
+	for i := myHead.Y; i >= 1; i-- {
+		currentCoord := Coord{X: myHead.X, Y: i}
+		if !CheckCoordForAnySnake(state, FindNextCoord(state, "down", currentCoord)) {
+			freeCells["down"] += 1
+			if !CheckCoordForAnySnake(state, FindNextCoord(state, "down", FindNextCoord(state, "left", currentCoord))) {
 				freeCells["down"] += 1
-				if !CheckCoordForAnySnake(state, FindNextCoord(state, "down", FindNextCoord(state, "left", currentCoord))) {
-					freeCells["down"] += 1
-				}
-				if !CheckCoordForAnySnake(state, FindNextCoord(state, "down", FindNextCoord(state, "right", currentCoord))) {
-					freeCells["down"] += 1
-				}
-			} else {
-				break
 			}
+			if !CheckCoordForAnySnake(state, FindNextCoord(state, "down", FindNextCoord(state, "right", currentCoord))) {
+				freeCells["down"] += 1
+			}
+		} else {
+			break
 		}
+	}
 
-		for i := myHead.Y; i < state.Board.Height-1; i++ {
-			currentCoord := Coord{X: myHead.X, Y: i}
-			if !CheckCoordForAnySnake(state, FindNextCoord(state, "up", currentCoord)) {
+	for i := myHead.Y; i < state.Board.Height-1; i++ {
+		currentCoord := Coord{X: myHead.X, Y: i}
+		if !CheckCoordForAnySnake(state, FindNextCoord(state, "up", currentCoord)) {
+			freeCells["up"] += 1
+			if !CheckCoordForAnySnake(state, FindNextCoord(state, "up", FindNextCoord(state, "left", currentCoord))) {
 				freeCells["up"] += 1
-				if !CheckCoordForAnySnake(state, FindNextCoord(state, "up", FindNextCoord(state, "left", currentCoord))) {
-					freeCells["up"] += 1
-				}
-				if !CheckCoordForAnySnake(state, FindNextCoord(state, "up", FindNextCoord(state, "right", currentCoord))) {
-					freeCells["up"] += 1
-				}
-			} else {
-				break
 			}
+			if !CheckCoordForAnySnake(state, FindNextCoord(state, "up", FindNextCoord(state, "right", currentCoord))) {
+				freeCells["up"] += 1
+			}
+		} else {
+			break
 		}
 
-		if state.Game.Ruleset.Name == "wrapped" {
-			for i := myHead.X; i >= 1; i-- {
-				currentCoord := Coord{X: i, Y: myHead.Y}
-				if !CheckCoordForAnySnake(state, FindNextCoord(state, "left", currentCoord)) {
-					freeCells["left"] += 1
-					if !CheckCoordForAnySnake(state, FindNextCoord(state, "left", FindNextCoord(state, "up", currentCoord))) {
+		/*
+			if state.Game.Ruleset.Name == "wrapped" {
+				for i := myHead.X; i >= 1; i-- {
+					currentCoord := Coord{X: i, Y: myHead.Y}
+					if !CheckCoordForAnySnake(state, FindNextCoord(state, "left", currentCoord)) {
 						freeCells["left"] += 1
+						if !CheckCoordForAnySnake(state, FindNextCoord(state, "left", FindNextCoord(state, "up", currentCoord))) {
+							freeCells["left"] += 1
+						}
+						if !CheckCoordForAnySnake(state, FindNextCoord(state, "left", FindNextCoord(state, "down", currentCoord))) {
+							freeCells["left"] += 1
+						}
+					} else {
+						break
 					}
-					if !CheckCoordForAnySnake(state, FindNextCoord(state, "left", FindNextCoord(state, "down", currentCoord))) {
-						freeCells["left"] += 1
-					}
-				} else {
-					break
 				}
-			}
 
-			for i := myHead.X; i < 9; i++ {
-				currentCoord := Coord{X: i, Y: myHead.Y}
-				if !CheckCoordForAnySnake(state, FindNextCoord(state, "right", currentCoord)) {
-					freeCells["right"] += 1
-					if !CheckCoordForAnySnake(state, FindNextCoord(state, "right", FindNextCoord(state, "up", currentCoord))) {
+				for i := myHead.X; i < 9; i++ {
+					currentCoord := Coord{X: i, Y: myHead.Y}
+					if !CheckCoordForAnySnake(state, FindNextCoord(state, "right", currentCoord)) {
 						freeCells["right"] += 1
+						if !CheckCoordForAnySnake(state, FindNextCoord(state, "right", FindNextCoord(state, "up", currentCoord))) {
+							freeCells["right"] += 1
+						}
+						if !CheckCoordForAnySnake(state, FindNextCoord(state, "right", FindNextCoord(state, "down", currentCoord))) {
+							freeCells["right"] += 1
+						}
+					} else {
+						break
 					}
-					if !CheckCoordForAnySnake(state, FindNextCoord(state, "right", FindNextCoord(state, "down", currentCoord))) {
-						freeCells["right"] += 1
-					}
-				} else {
-					break
 				}
-			}
 
-			for i := myHead.Y; i >= 1; i-- {
-				currentCoord := Coord{X: myHead.X, Y: i}
-				if !CheckCoordForAnySnake(state, FindNextCoord(state, "down", currentCoord)) {
-					freeCells["down"] += 1
-					if !CheckCoordForAnySnake(state, FindNextCoord(state, "down", FindNextCoord(state, "left", currentCoord))) {
+				for i := myHead.Y; i >= 1; i-- {
+					currentCoord := Coord{X: myHead.X, Y: i}
+					if !CheckCoordForAnySnake(state, FindNextCoord(state, "down", currentCoord)) {
 						freeCells["down"] += 1
+						if !CheckCoordForAnySnake(state, FindNextCoord(state, "down", FindNextCoord(state, "left", currentCoord))) {
+							freeCells["down"] += 1
+						}
+						if !CheckCoordForAnySnake(state, FindNextCoord(state, "down", FindNextCoord(state, "right", currentCoord))) {
+							freeCells["down"] += 1
+						}
+					} else {
+						break
 					}
-					if !CheckCoordForAnySnake(state, FindNextCoord(state, "down", FindNextCoord(state, "right", currentCoord))) {
-						freeCells["down"] += 1
-					}
-				} else {
-					break
 				}
-			}
 
-			for i := myHead.Y; i < 11; i++ {
-				currentCoord := Coord{X: myHead.X, Y: i}
-				if !CheckCoordForAnySnake(state, FindNextCoord(state, "up", currentCoord)) {
-					freeCells["up"] += 1
-					if !CheckCoordForAnySnake(state, FindNextCoord(state, "up", FindNextCoord(state, "left", currentCoord))) {
+				for i := myHead.Y; i < 11; i++ {
+					currentCoord := Coord{X: myHead.X, Y: i}
+					if !CheckCoordForAnySnake(state, FindNextCoord(state, "up", currentCoord)) {
 						freeCells["up"] += 1
+						if !CheckCoordForAnySnake(state, FindNextCoord(state, "up", FindNextCoord(state, "left", currentCoord))) {
+							freeCells["up"] += 1
+						}
+						if !CheckCoordForAnySnake(state, FindNextCoord(state, "up", FindNextCoord(state, "right", currentCoord))) {
+							freeCells["up"] += 1
+						}
+					} else {
+						break
 					}
-					if !CheckCoordForAnySnake(state, FindNextCoord(state, "up", FindNextCoord(state, "right", currentCoord))) {
-						freeCells["up"] += 1
-					}
-				} else {
-					break
 				}
-			}
-		}
+			}*/
 	}
 	/*
 		if freeCells["left"] >= int(state.You.Length) {
@@ -208,3 +208,13 @@ func CheckCoordForAnySnake(state GameState, target Coord) bool {
 	}
 	return false
 }
+
+/*
+func FindLookDistanceRightWRAPPED(state GameState, target Coord) {
+	freeSquares := 0
+	if !CheckCoordForAnySnake(state, target) {
+		freeSquares += 1
+
+	}
+}
+*/

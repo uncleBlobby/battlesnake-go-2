@@ -51,7 +51,9 @@ func move(state GameState) BattlesnakeMoveResponse {
 	}
 
 	AvoidNeck(state, scoredMoves)
-	AvoidWalls(state, scoredMoves)
+	if state.Game.Ruleset.Name != "wrapped" {
+		AvoidWalls(state, scoredMoves)
+	}
 	AvoidOwnBody(state, scoredMoves)
 	AvoidOtherSnakes(state, scoredMoves)
 	PreferNotSaucyMoves(state, scoredMoves)
