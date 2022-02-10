@@ -99,6 +99,26 @@ func FindCloseFood(state GameState, healthFactor int, scoredMoves map[string]int
 	}
 }
 
+func FindDistantFood(state GameState, healthFactor int, scoredMoves map[string]int) {
+	myHead := state.You.Head
+	closestFood := FindClosestFoodDistance(state)
+	pathToClosestFood := FindAnyPath(state, myHead, Coord{closestFood.X, closestFood.Y})
+	if len(pathToClosestFood) > 0 {
+		if pathToClosestFood[0].X > myHead.X {
+			scoredMoves["right"] += healthFactor / len(pathToClosestFood)
+		}
+		if pathToClosestFood[0].X < myHead.X {
+			scoredMoves["left"] += healthFactor / len(pathToClosestFood)
+		}
+		if pathToClosestFood[0].Y > myHead.Y {
+			scoredMoves["up"] += healthFactor / len(pathToClosestFood)
+		}
+		if pathToClosestFood[0].Y < myHead.Y {
+			scoredMoves["up"] += healthFactor / len(pathToClosestFood)
+		}
+	}
+}
+
 func PreferNotSaucyMoves(state GameState, scoredMoves map[string]int) {
 	myHead := state.You.Body[0]
 	hazards := state.Board.Hazards

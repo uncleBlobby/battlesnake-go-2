@@ -5,7 +5,7 @@ import (
 	"math"
 )
 
-func findFoodDistances(state GameState) Food {
+func FindClosestFoodDistance(state GameState) Food {
 	food := state.Board.Food
 	myHead := state.You.Body[0]
 
@@ -48,7 +48,7 @@ func findPathToClosestFood(state GameState, closestFood Food) /*[]Coord*/ {
 	fmt.Printf("Closest Food Distance Y: %v\n", closestFood.Distance.Y)
 	fmt.Printf("Closest Food Total Dist. : %v\n", closestFood.Distance.Total)
 
-	fmt.Printf("Path to Food: %v", findAnyPath(myHead, closestFoodCoord))
+	fmt.Printf("Path to Food: %v", FindAnyPath(state, myHead, closestFoodCoord))
 }
 
 func returnManhattanDistance(start Coord, end Coord) int {
@@ -65,7 +65,7 @@ func returnRelativeYDistance(start Coord, end Coord) int {
 	return start.Y - end.Y
 }
 
-func findAnyPath(start Coord, end Coord) []Coord {
+func FindAnyPath(state GameState, start Coord, end Coord) []Coord {
 	shortestPathLength := returnManhattanDistance(start, end)
 	fmt.Printf("Manhattan distance to food: %v\n", shortestPathLength)
 
@@ -92,13 +92,6 @@ func findAnyPath(start Coord, end Coord) []Coord {
 			pathXCoords = append(pathXCoords, start.X)
 		}
 	}
-	/*
-		if len(pathXCoords) < shortestPathLength {
-			for i := len(pathXCoords); i <= shortestPathLength; i++ {
-				pathXCoords = append(pathXCoords, pathXCoords[len(pathXCoords)-1])
-			}
-		}
-	*/
 
 	if start.Y > end.Y {
 		// path must move down
@@ -120,39 +113,93 @@ func findAnyPath(start Coord, end Coord) []Coord {
 			pathYCoords = append(pathYCoords, start.Y)
 		}
 	}
-	/*
-		if len(pathYCoords) < shortestPathLength {
-			for i := len(pathYCoords); i <= shortestPathLength; i++ {
-				pathYCoords = append(pathYCoords, pathYCoords[len(pathYCoords)-1])
-			}
-		}
-	*/
 
 	// take the two slices of ints for each coord parameter and mash
 	// ASSEMBLE PATH
 	// DO ALL X MOVES FIRST< THEN DO ALL Y MOVES (or vice versa)
 	// CANNOT DO BOTH AT THE SAME TIME, DIAGONALS ARE NOT ALLOWED
 
-	pathCoords := []Coord{}
+	XFIRSTpathCoords := []Coord{}
+	YFIRSTpathCoords := []Coord{}
 
 	fmt.Println("Shortest path length: ", shortestPathLength)
 	fmt.Println("X Path Coords: ", pathXCoords)
 	fmt.Println("Y Path Coords: ", pathYCoords)
 
+	// X FIRST
 	// Do all the X moves
 
 	for i := 0; i < len(pathXCoords); i++ {
 		var CoordToAdd Coord
 		CoordToAdd.X = pathXCoords[i]
 		CoordToAdd.Y = start.Y
-		pathCoords = append(pathCoords, CoordToAdd)
+		XFIRSTpathCoords = append(XFIRSTpathCoords, CoordToAdd)
 	}
 
+	// Then all the Y moves
 	for i := 0; i < len(pathYCoords); i++ {
 		var CoordToAdd Coord
 		CoordToAdd.X = end.X
 		CoordToAdd.Y = pathYCoords[i]
-		pathCoords = append(pathCoords, CoordToAdd)
+		XFIRSTpathCoords = append(XFIRSTpathCoords, CoordToAdd)
 	}
+
+	// Y FIRST
+	// Do all the Y moves
+
+	for i := 0; i < len(pathYCoords); i++ {
+		var CoordToAdd Coord
+		CoordToAdd.X = start.X
+		CoordToAdd.Y = pathYCoords[i]
+		YFIRSTpathCoords = append(YFIRSTpathCoords, CoordToAdd)
+	}
+
+	for i := 0; i < len(pathXCoords); i++ {
+		var CoordToAdd Coord
+		CoordToAdd.X = pathXCoords[i]
+		CoordToAdd.Y = end.Y
+		YFIRSTpathCoords = append(YFIRSTpathCoords, CoordToAdd)
+	}
+
+	// Decide Which set of path coords is safer
+
+	fmt.Println("X First Path: ", XFIRSTpathCoords)
+	fmt.Println("Y First Path: ", YFIRSTpathCoords)
+
+	xPathFirstIsBlocked := checkPathForEnemies(state, XFIRSTpathCoords)
+	if xPathFirstIsBlocked {
+		fmt.Println("Moving X first is blocked by a snake.")
+	}
+	if !xPathFirstIsBlocked {
+		fmt.Println("Moving X first is clear of any snake.")
+		pathCoords := XFIRSTpathCoords
+		return pathCoords
+	}
+	yPathFirstIsBlocked := checkPathForEnemies(state, YFIRSTpathCoords)
+	if yPathFirstIsBlocked {
+		fmt.Println("Moving Y first is blocked by a snake.")
+	}
+	if !yPathFirstIsBlocked {
+		fmt.Println("Moving Y first is clear of any snakes.")
+		pathCoords := YFIRSTpathCoords
+		return pathCoords
+	}
+	var pathCoords []Coord
+	pathCoords = append(pathCoords, Coord{X: start.X, Y: start.Y})
+	fmt.Println("Should not have got this far.")
 	return pathCoords
+}
+
+func checkPathForEnemies(state GameState, path []Coord) bool {
+	snakes := state.Board.Snakes
+	for i := 0; i < len(path); i++ {
+		for j := 0; j < len(snakes); j++ {
+			for k := 0; k < int(snakes[j].Length); k++ {
+				if path[i].X == snakes[j].Body[k].X && path[i].Y == snakes[j].Body[k].Y {
+					return true
+				}
+			}
+		}
+	}
+	return false
 }

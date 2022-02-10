@@ -675,7 +675,50 @@ func TestFoodDistanceDebug(t *testing.T) {
 
 	// Act 1,000x (this isn't a great way to test, but it's okay for starting out)
 	for i := 0; i < 2; i++ {
-		findPathToClosestFood(state, findFoodDistances(state))
+		findPathToClosestFood(state, FindClosestFoodDistance(state))
+		/*
+			if viewDistance["down"] > viewDistance["up"] {
+				t.Errorf("view distance, %v", viewDistance)
+			}
+		*/
+		//fmt.Println(viewDistance)
+	}
+}
+
+func TestFoodDistanceXPATHWithEnemyBlocking(t *testing.T) {
+	// Arrange
+	// Should be an enemy blocking the XPATH to food,
+	// so the YPATH should be the chosen route
+	me := Battlesnake{
+		// Length 3, facing down
+		Head: Coord{X: 5, Y: 5},
+		Body: []Coord{{X: 5, Y: 5}, {X: 5, Y: 6}, {X: 5, Y: 7}},
+	}
+
+	enemy1 := Battlesnake{
+		Head:   Coord{X: 7, Y: 5},
+		Body:   []Coord{{X: 7, Y: 5}, {X: 8, Y: 5}, {X: 8, Y: 6}},
+		Length: 3,
+	}
+
+	state := GameState{
+		Board: Board{
+			Width:  11,
+			Height: 11,
+			Snakes: []Battlesnake{me, enemy1},
+			Food:   []Coord{{X: 10, Y: 2}},
+		},
+		You: me,
+		Game: Game{
+			Ruleset: Ruleset{
+				Name: "standard",
+			},
+		},
+	}
+
+	// Act 1,000x (this isn't a great way to test, but it's okay for starting out)
+	for i := 0; i < 2; i++ {
+		findPathToClosestFood(state, FindClosestFoodDistance(state))
 		/*
 			if viewDistance["down"] > viewDistance["up"] {
 				t.Errorf("view distance, %v", viewDistance)

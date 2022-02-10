@@ -169,6 +169,31 @@ func CountCellsUntilYouSeeASnake(state GameState) map[string]int {
 		}
 	}
 
+	if freeCells["left"] >= 2*int(state.You.Length) {
+		freeCells["left"] += freeCells["left"]
+	}
+	if freeCells["left"] < 2*int(state.You.Length) {
+		freeCells["left"] += -freeCells["left"] / 2
+	}
+	if freeCells["right"] >= 2*int(state.You.Length) {
+		freeCells["right"] += freeCells["right"]
+	}
+	if freeCells["right"] < 2*int(state.You.Length) {
+		freeCells["right"] += -freeCells["right"] / 2
+	}
+	if freeCells["down"] >= 2*int(state.You.Length) {
+		freeCells["down"] += freeCells["down"]
+	}
+	if freeCells["down"] < 2*int(state.You.Length) {
+		freeCells["down"] += -freeCells["down"] / 2
+	}
+	if freeCells["up"] >= 2*int(state.You.Length) {
+		freeCells["up"] += freeCells["up"]
+	}
+	if freeCells["up"] < 2*int(state.You.Length) {
+		freeCells["up"] += -freeCells["up"] / 2
+	}
+
 	return freeCells
 }
 

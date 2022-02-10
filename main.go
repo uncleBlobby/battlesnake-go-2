@@ -162,7 +162,7 @@ func HandleEnd(w http.ResponseWriter, r *http.Request) {
 func main() {
 	port := os.Getenv("PORT")
 	if len(port) == 0 {
-		port = "6969"
+		port = "7070"
 	}
 
 	http.HandleFunc("/", HandleIndex)
