@@ -644,4 +644,45 @@ func TestCountEmptyCellsDown(t *testing.T) {
 	}
 }
 
+func TestFoodDistanceDebug(t *testing.T) {
+	// Arrange
+	me := Battlesnake{
+		// Length 3, facing down
+		Head: Coord{X: 5, Y: 5},
+		Body: []Coord{{X: 5, Y: 5}, {X: 5, Y: 6}, {X: 5, Y: 7}},
+	}
+	/*
+		enemy1 := Battlesnake{
+			Head:   Coord{X: 4, Y: 2},
+			Body:   []Coord{{X: 4, Y: 2}, {X: 5, Y: 2}, {X: 6, Y: 2}},
+			Length: 3,
+		}
+	*/
+	state := GameState{
+		Board: Board{
+			Width:  11,
+			Height: 11,
+			Snakes: []Battlesnake{me},
+			Food:   []Coord{{X: 10, Y: 2}},
+		},
+		You: me,
+		Game: Game{
+			Ruleset: Ruleset{
+				Name: "standard",
+			},
+		},
+	}
+
+	// Act 1,000x (this isn't a great way to test, but it's okay for starting out)
+	for i := 0; i < 2; i++ {
+		findPathToClosestFood(state, findFoodDistances(state))
+		/*
+			if viewDistance["down"] > viewDistance["up"] {
+				t.Errorf("view distance, %v", viewDistance)
+			}
+		*/
+		//fmt.Println(viewDistance)
+	}
+}
+
 // TODO: More GameState test cases!
