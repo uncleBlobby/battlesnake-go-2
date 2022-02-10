@@ -122,7 +122,7 @@ func CountCellsUntilYouSeeASnake(state GameState) map[string]int {
 				}
 			}
 
-			for i := myHead.X; i < 11; i++ {
+			for i := myHead.X; i < 9; i++ {
 				currentCoord := Coord{X: i, Y: myHead.Y}
 				if !CheckCoordForAnySnake(state, FindNextCoord(state, "right", currentCoord)) {
 					freeCells["right"] += 1
@@ -168,32 +168,32 @@ func CountCellsUntilYouSeeASnake(state GameState) map[string]int {
 			}
 		}
 	}
-
-	if freeCells["left"] >= 2*int(state.You.Length) {
-		freeCells["left"] += freeCells["left"]
-	}
-	if freeCells["left"] < 2*int(state.You.Length) {
-		freeCells["left"] += -freeCells["left"] / 2
-	}
-	if freeCells["right"] >= 2*int(state.You.Length) {
-		freeCells["right"] += freeCells["right"]
-	}
-	if freeCells["right"] < 2*int(state.You.Length) {
-		freeCells["right"] += -freeCells["right"] / 2
-	}
-	if freeCells["down"] >= 2*int(state.You.Length) {
-		freeCells["down"] += freeCells["down"]
-	}
-	if freeCells["down"] < 2*int(state.You.Length) {
-		freeCells["down"] += -freeCells["down"] / 2
-	}
-	if freeCells["up"] >= 2*int(state.You.Length) {
-		freeCells["up"] += freeCells["up"]
-	}
-	if freeCells["up"] < 2*int(state.You.Length) {
-		freeCells["up"] += -freeCells["up"] / 2
-	}
-
+	/*
+		if freeCells["left"] >= int(state.You.Length) {
+			freeCells["left"] += freeCells["left"]
+		}
+		if freeCells["left"] < int(state.You.Length) {
+			freeCells["left"] += -freeCells["left"] / 2
+		}
+		if freeCells["right"] >= int(state.You.Length) {
+			freeCells["right"] += freeCells["right"]
+		}
+		if freeCells["right"] < int(state.You.Length) {
+			freeCells["right"] += -freeCells["right"] / 2
+		}
+		if freeCells["down"] >= int(state.You.Length) {
+			freeCells["down"] += freeCells["down"]
+		}
+		if freeCells["down"] < int(state.You.Length) {
+			freeCells["down"] += -freeCells["down"] / 2
+		}
+		if freeCells["up"] >= int(state.You.Length) {
+			freeCells["up"] += freeCells["up"]
+		}
+		if freeCells["up"] < int(state.You.Length) {
+			freeCells["up"] += -freeCells["up"] / 2
+		}
+	*/
 	return freeCells
 }
 
