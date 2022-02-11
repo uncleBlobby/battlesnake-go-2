@@ -203,3 +203,28 @@ func checkPathForEnemies(state GameState, path []Coord) bool {
 	}
 	return false
 }
+
+func CheckAnyCoordLEFTForEnemies(state GameState, target Coord, depth int) bool {
+	snakes := state.Board.Snakes
+	for i := 0; i < len(snakes); i++ {
+		for j := 0; j < int(snakes[i].Length); j++ {
+			if target.X-depth == snakes[i].Body[j].X && target.Y == snakes[i].Body[j].Y {
+				return true
+			}
+		}
+	}
+	return false
+}
+
+func CheckAnyCoordRIGHTForEnemies(state GameState, target Coord, depth *int) bool {
+	snakes := state.Board.Snakes
+	for i := 0; i < len(snakes); i++ {
+		for j := 0; j < int(snakes[i].Length); j++ {
+			if target.X+*depth == snakes[i].Body[j].X && target.Y == snakes[i].Body[j].Y {
+				return true
+			}
+		}
+	}
+	*depth += 1
+	return false
+}
