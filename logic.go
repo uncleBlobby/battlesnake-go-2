@@ -63,6 +63,7 @@ func move(state GameState) BattlesnakeMoveResponse {
 	TurnTowardSmallerSnakes(state, scoredMoves)
 
 	viewDistances := CountCellsUntilYouSeeASnake(state)
+
 	if state.You.Health <= 15 {
 		FindDistantFood(state, FindMissingHealth(state), scoredMoves)
 	}
