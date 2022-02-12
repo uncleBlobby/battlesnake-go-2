@@ -190,6 +190,9 @@ func FindAnyPath(state GameState, start Coord, end Coord) []Coord {
 	return pathCoords
 }
 
+// Takes a path of coordinates and checks each coord for any snake body.
+// NOW IGNORES TAILS
+
 func checkPathForEnemies(state GameState, path []Coord) bool {
 	snakes := state.Board.Snakes
 	for i := 0; i < len(path); i++ {
@@ -204,6 +207,9 @@ func checkPathForEnemies(state GameState, path []Coord) bool {
 	}
 	return false
 }
+
+// Below is yet unused, part of the "new" lookahead refactor.
+// Probably better ways to do it in the end.
 
 func CheckAnyCoordLEFTForEnemies(state GameState, target Coord, depth int) bool {
 	snakes := state.Board.Snakes

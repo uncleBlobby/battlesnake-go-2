@@ -38,10 +38,12 @@ func AvoidWalls(state GameState, scoredMoves map[string]int) {
 	}
 }
 
+// FEB 11 update below to ignore own tail!
+
 func AvoidOwnBody(state GameState, scoredMoves map[string]int) {
 	myHead := state.You.Body[0]
 	mybody := state.You.Body
-	for i := 1; i < int(state.You.Length); i++ {
+	for i := 1; i < int(state.You.Length-1); i++ {
 		if (myHead.X+1 == mybody[i].X) && (myHead.Y == mybody[i].Y) {
 			scoredMoves["right"] += -100
 		}
@@ -57,12 +59,15 @@ func AvoidOwnBody(state GameState, scoredMoves map[string]int) {
 	}
 }
 
+// FEB 11 update below to ignore snake tail!
+// TODO: ONLY avoid snake tail when that snake CANNOT EAT
+
 func AvoidOtherSnakes(state GameState, scoredMoves map[string]int) {
 	myHead := state.You.Body[0]
 	snakes := state.Board.Snakes
 
 	for i := 0; i < len(snakes); i++ {
-		for j := 0; j < int(snakes[i].Length); j++ {
+		for j := 0; j < int(snakes[i].Length-1); j++ {
 			if (myHead.X-1 == snakes[i].Body[j].X) && (myHead.Y == snakes[i].Body[j].Y) {
 				scoredMoves["left"] += -100
 			}
