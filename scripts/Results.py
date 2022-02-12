@@ -11,12 +11,12 @@ for i in range(0, len(lines)):
         #print(lines[i], end = "")
     if "DONE" in lines[i]:
         #print(lines[i], end = "")
-        if "update" in lines[i]:
+        if "wrappedhack" in lines[i]:
             goSnakeWins += 1
-        if "anti-blobby" in lines[i]:
+        if "anti-blobby-live" in lines[i]:
             antiBlobWins += 1
 
 
 print("Results:")
-print("update: ", goSnakeWins, " wins")
-print("anti-blobby", antiBlobWins, " wins")
+print("wrappedhack: ", goSnakeWins, " wins")
+print("anti-blobby-live", antiBlobWins, " wins")
