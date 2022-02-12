@@ -194,7 +194,8 @@ func checkPathForEnemies(state GameState, path []Coord) bool {
 	snakes := state.Board.Snakes
 	for i := 0; i < len(path); i++ {
 		for j := 0; j < len(snakes); j++ {
-			for k := 0; k < int(snakes[j].Length); k++ {
+			// changed length of iteration to - 1 to avoid snake tail
+			for k := 0; k < int(snakes[j].Length-1); k++ {
 				if path[i].X == snakes[j].Body[k].X && path[i].Y == snakes[j].Body[k].Y {
 					return true
 				}
